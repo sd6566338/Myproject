@@ -15,18 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from sight.views import index,add,ajax_list,ajax_dict,line_stack,test_list,hello
-from sight import heyidata, example
+from sight.views import test_list,line_stack
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
-    path('add/', add, name='add'),
-    path('ajax_list/', ajax_list, name='ajax_list'),
-    path('ajax_dict/', ajax_dict, name='ajax_dict'),
     path('line_stack/', line_stack, name='line_stack'),
     path('test_list/', test_list, name='test_list'),
-    path('heyidata/', heyidata.saledata, name='heyidata'),
-    path('example/', example.question, name='example'),
-    path('hello/', hello, name='hello'),
 
 ]
