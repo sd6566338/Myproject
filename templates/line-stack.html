@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+{{ test_list }}
+   <body id="targetDom" style="height: 100%; margin: 0">
+{#    <div id="list" onclick="AjaxSubmit();">Ajax 加载列表</div>#}
+    <div id="list">Ajax 加载列表</div>
+
+    <p id="list_result"></p>
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>#}
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>#}
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>#}
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>#}
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>#}
+{#       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>#}
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>#}
+{#       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>#}
+       <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+       <script type="text/javascript">
+
+
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title: {
+        text: '折线图堆叠'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['周一','周二','周三','周四','周五','周六','周日']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'邮件营销',
+            type:'line',
+            stack: '总量',
+            data: []
+        },
+        {
+            name:'联盟广告',
+            type:'line',
+            stack: '总量',
+            data:[]
+        },
+        {
+            name:'视频广告',
+            type:'line',
+            stack: '总量',
+            data:[]
+        },
+        {
+            name:'直接访问',
+            type:'line',
+            stack: '总量',
+            data:[]
+        },
+        {
+            name:'搜索引擎',
+            type:'line',
+            stack: '总量',
+            data:[820, 932, 901, 934, 1290, 1330, 1320]
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+    $(document).ready(function(){
+       $("#list").click(function(){
+           $.getJSON("{% url 'test_list' %}", function(ret){
+           {#$('#targetDom').html(ret);#}
+                $.each(ret, function(i,item){
+                    {#console.log(ss);#}
+                    console.log(item.data);
+                    myChart.setOption({
+                    series: [{
+                    name: item.name,
+                    data: item.data
+                    }]
+                 });
+                });
+
+
+           })
+      })
+     })
+{#    function AjaxSubmit(){#}
+{#        $.ajax({#}
+{#            url:"{% url 'test_list' %}",#}
+{#            type:'get',#}
+{#            dataType: "html",#}
+{##}
+{#            // data:{data:cabinet_listWord},#}
+{#            success: function (arg) {#}
+{#                console.log(arg);#}
+{#                if(arg){#}
+{#                option.series[0].data = {{ test_list }};#}
+                {# } #}
+{#				$("#targetDom").html(arg);#}
+{#                // var html = arg;#}
+{#                // $("#targetDom").html(html);#}
+{#            }#}
+{#        });#}
+{#    }#}
+       </script>
+
+
+   </body>
+</html>

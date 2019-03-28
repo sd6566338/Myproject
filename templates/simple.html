@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合一正品厂家销售数据(饼状图)</title>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="chartmain" style="width:600px; height: 400px;"></div>
+</body>
+<script type="text/javascript">
+        //指定图标的配置和数据
+        var option = {
+            title:{
+                text:'合一正品厂家销售数据(饼状图)'
+            },
+            tooltip: {},    //数据悬浮时显示子项数据
+            legend: {
+                data:['销量']
+            },            
+            series:[{
+                name:'销量',
+                type:'pie',    
+                radius:'60%', 
+                data:[]
+                // data:[
+                //     {value:500,name:'北方大药房'},
+                //     {value:200,name:'南方大药房'},
+                //     {value:360,name:'美宜佳'},
+                //     {value:200,name:'和生堂大药房'},
+                //     {value:160,name:'淘宝大药房'},
+                //     {value:180,name:'7-11便利店'}
+                // ]
+            }]
+        };
+
+        //初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chartmain'));
+        myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+
+        //使用制定的配置项和数据显示图表
+        myChart.setOption(option);
+
+        url = "http://localhost:8000/heyidata";
+        $.getJSON(url,function(json){
+            myChart.hideLoading();    //隐藏加载动画
+            myChart.setOption({        //加载数据图表
+                series: {
+                    data: json.data
+                }
+            });
+        });
+    </script>
+</html>
+
+

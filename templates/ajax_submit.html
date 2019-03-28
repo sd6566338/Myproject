@@ -1,0 +1,74 @@
+<div class="right">
+
+             <h1>添加用户</h1>
+
+                <form action="/user_add/" method="post" onsubmit="return check_form()">
+                    {% csrf_token %}
+                    <ul>
+                        <li>
+                                <label for="username">用户名</label>
+                                <input type="text" id="username" name="username" value="" onblur="check_username(this)" required>
+                                <span class="user_error"></span>
+                         </li>
+                        <li>
+                                <label for="password">密码</label>
+                                <input type="password" id="password" name="password" value="" required>
+                        </li>
+                          <li>
+                                <label for="repassword">确认密码</label>
+                                <input type="password" id="repassword" name="repassword" value="" required>
+                        </li>
+                        <li>
+                            <input type="submit" value="提交"/><span id="error"></span>
+                        </li>
+                   </ul>
+                </form>
+
+    </div>
+
+ </div>
+<script>
+ function check_username(obj){
+     var url='/check_username/';//请求地址
+     var username =$(obj).val();
+     var data ={'username':username}//地址携带的参数
+     $.ajax({
+         type:'get',
+         url:url,
+         data:data,
+         success:function(mydata){
+             //当返回结果不为空时，账号已存在
+            if(mydata != ''){
+                $(obj).css('border','1px solid red');
+                $('#error').html('*账号已存在!')
+            }
+            else{
+                $(obj).css('border','1px solid black');
+                $('#error').html('')
+            }
+         }
+
+     });
+ }
+    function check_form(){
+      //分别取得两次输入的密码：
+      pwd=$('#password').val();
+      repwd=$('#repassword').val();
+      error=$('#error').html()
+      if(pwd == repwd){
+          //判断错误信息
+          if(error == ''){
+              //当错误信息不存在时
+              return true;
+          }else{
+              //当错误信息存在时
+              return false;
+          }
+
+      }else{
+          $('#error').html('两次密码不相同！')
+          return false;
+
+      }
+    }
+</script>
